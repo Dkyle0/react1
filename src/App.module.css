@@ -5,8 +5,8 @@
 		0px 2px 4px 0px rgba(0, 0, 0, 0.12);
 	margin-inline-start: auto;
 	margin-inline-end: auto;
-	margin-block-start: 2em;
-	max-inline-size: 22rem;
+	margin-block-start: 13%;
+	max-inline-size: 25rem;
 	overflow: hidden;
 }
 .calculatorOutput {
@@ -55,4 +55,7 @@
 	background: hsl(226, 100%, 72%);
 	text-align: center;
 	font-size: 1.5rem;
+}
+.result {
+	color: rgb(100, 220, 20);
 }
