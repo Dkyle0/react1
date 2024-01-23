@@ -1,27 +1,37 @@
 import { FormLayout } from './form-layout';
-import { useRef } from 'react';
-import { useStore } from './useStore';
-import { handler } from './handler';
-
-export function sendForm(resetState) {
-	return function sendFormWithReset(email, password) {
-		console.log('email: ', email, '|', 'password: ', password);
-		resetState();
-	};
-}
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { fieldsSchema } from './schema';
+import { sendData } from './utils';
 
 export function Form() {
-	const { getState, updateAllState, resetState } = useStore();
-	const submitButtonRef = useRef(null);
-	const sendData = sendForm(resetState);
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		defaultValues: {
+			email: '',
+			password: '',
+			confirmPassword: '',
+		},
+		resolver: yupResolver(fieldsSchema),
+	});
+
+	const emailError = errors.email?.message;
+	const passwordError = errors.password?.message;
+	const confirmPasswordError = errors.confirmPassword?.message;
+	const formValid = !emailError && !passwordError && !confirmPasswordError;
 
 	return (
 		<FormLayout
-			getState={getState}
-			handler={handler}
-			updateAllState={updateAllState}
-			submitButtonRef={submitButtonRef}
+			register={register}
 			sendData={sendData}
+			formValid={formValid}
+			emailError={emailError}
+			passwordError={passwordError}
+			confirmPasswordError={confirmPasswordError}
+			handleSubmit={handleSubmit}
 		/>
 	);
 }
