@@ -1,0 +1,11 @@
+.new {
+	width: 99%;
+	height: 2rem;
+}
+
+.addTodoBottom {
+	cursor: pointer;
+	margin: 5px 0px 5px 10%;
+	width: 80%;
+	border: 1px solid #0dcaf0;
+}

@@ -1,6 +1,6 @@
 import './App.css';
-import { TodoBloсk } from './components';
+import { TodoBlock } from './components';
 
 export const App = () => {
-	return <TodoBloсk />;
+	return <TodoBlock />;
 };

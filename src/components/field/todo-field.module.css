@@ -11,3 +11,22 @@
 	padding: 15px 0;
 	color: #333;
 }
+
+.actions {
+	display: flex;
+	margin: 5px;
+}
+
+.actionBtn {
+	font-size: 2rem;
+	cursor: pointer;
+	transition: transform 0.3s;
+}
+
+.actionBtn:active {
+	transform: scale(0.95); /* Уменьшим размер при клике */
+}
+
+.done {
+	background-color: aquamarine;
+}

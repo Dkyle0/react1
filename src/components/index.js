@@ -1,1 +1,1 @@
-export * from './todos_bloсk.jsx';
+export * from './todos-bloсk.jsx';
