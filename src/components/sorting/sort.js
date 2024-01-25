@@ -4,10 +4,10 @@ import { debounce } from '../utils.js';
 export function sort(todos, setfiltredTodos, isAlpha, setisAlpha) {
 	setisAlpha(!isAlpha);
 	if (!isAlpha) {
-		const sortedTodos = [...todos].sort((a, b) => {
+		const sortedTodos = Object.values(todos).sort((a, b) => {
+			console.log(a, b);
 			const titleA = a.title.toLowerCase();
 			const titleB = b.title.toLowerCase();
-
 			if (titleA < titleB) {
 				return -1;
 			}
@@ -18,21 +18,22 @@ export function sort(todos, setfiltredTodos, isAlpha, setisAlpha) {
 		});
 		setfiltredTodos(sortedTodos);
 	} else {
-		setfiltredTodos([...todos]);
+		setfiltredTodos(Object.values(todos));
 	}
 }
 
 export function filter(todos, setfiltredTodos, value) {
 	if (value) {
-		setfiltredTodos(todos.filter((todo) => todo.title.includes(value)));
+		const filteredTodos = Object.values(todos).filter((todo) => todo.title.includes(value));
+		setfiltredTodos(filteredTodos);
 	} else {
-		setfiltredTodos([...todos]);
+		setfiltredTodos(Object.values(todos));
 	}
 }
 
-const debouncedFilter = debounce(filter, 300);
-
 export function Sorting({ todos, setfiltredTodos, isAlpha, setisAlpha }) {
+	const debouncedFilter = debounce((value) => filter(todos, setfiltredTodos, value), 300);
+
 	return (
 		<div className={styles.sort}>
 			<button
@@ -46,7 +47,7 @@ export function Sorting({ todos, setfiltredTodos, isAlpha, setisAlpha }) {
 				className={styles.search}
 				type="text"
 				placeholder="Поиск"
-				onChange={(event) => debouncedFilter(todos, setfiltredTodos, event.target.value)}
+				onChange={(event) => debouncedFilter(event.target.value)}
 			></input>
 		</div>
 	);

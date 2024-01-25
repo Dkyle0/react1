@@ -3,29 +3,27 @@ import { Addtodo } from './add-todo';
 import { TodoField } from './field';
 import { Sorting } from './sorting';
 import { useEffect, useState } from 'react';
+import { db } from './firebase';
+import { ref, onValue } from 'firebase/database';
 
 export function TodoBlock() {
-	const [todos, setTodos] = useState([]);
+	const [todos, setTodos] = useState({});
 	const [isAlpha, setisAlpha] = useState(false);
-	const [filtredTodos, setfiltredTodos] = useState([]);
+	const [filtredTodos, setfiltredTodos] = useState({});
 	const [isLoading, setisLoading] = useState(true);
 	const [refreshProducts, setRefreshProducts] = useState(false);
 
 	useEffect(() => {
-		fetch('http://localhost:3003/todos')
-			.then((loadedData) => loadedData.json())
-			.then((list) => {
-				setTodos(list);
-				setfiltredTodos(list);
-			})
-			.catch((error) => {
-				console.error('Error fetching data:', error);
-			})
-			.finally(() => {
-				setisLoading(false);
-			});
-	}, [refreshProducts]);
+		const todosDbRef = ref(db, 'todos');
 
+		return onValue(todosDbRef, (snapshot) => {
+			const loadedTodos = snapshot.val();
+
+			setTodos(loadedTodos || {});
+			setfiltredTodos(loadedTodos || {});
+			setisLoading(false);
+		});
+	}, []);
 	return (
 		<div className={styles.blok}>
 			<Addtodo setRefreshProducts={setRefreshProducts} refreshProducts={refreshProducts} />
@@ -35,18 +33,16 @@ export function TodoBlock() {
 				<div className={styles.loader}></div>
 			) : (
 				<ul className={styles.list}>
-					{filtredTodos.map((todo) =>
-						todo.id ? (
-							<TodoField
-								key={todo.id}
-								title={todo.title}
-								id={todo.id}
-								isDone={todo.isDone}
-								setRefreshProducts={setRefreshProducts}
-								refreshProducts={refreshProducts}
-							/>
-						) : null,
-					)}
+					{Object.entries(filtredTodos).map(([id, { title, isDone }]) => (
+						<TodoField
+							key={id}
+							title={title}
+							id={id}
+							isDone={isDone}
+							setRefreshProducts={setRefreshProducts}
+							refreshProducts={refreshProducts}
+						/>
+					))}
 				</ul>
 			)}
 		</div>

@@ -1,19 +1,21 @@
 import styles from './add-todo.module.css';
+import { ref, push } from 'firebase/database';
+import { db } from '../firebase';
 
 export function requestAddTodo(value, setRefreshProducts, refreshProducts) {
 	if (value) {
-		fetch('http://localhost:3003/todos', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-			body: JSON.stringify({
-				title: value,
-				isDone: false,
-			}),
+		const productsDbRef = ref(db, 'todos');
+
+		push(productsDbRef, {
+			title: value,
+			isDone: false,
 		})
-			.then((rawResponse) => rawResponse.json())
 			.then((response) => {
 				console.log('Дело добавлено, ответ сервера:', response);
 				setRefreshProducts(!refreshProducts);
+			})
+			.catch((error) => {
+				console.error(error);
 			});
 	}
 }
