@@ -1,0 +1,48 @@
+.field {
+	display: flex;
+	background-color: white;
+	justify-content: space-between;
+	list-style: none;
+	padding-left: 1vw;
+	border-bottom: 1px solid #ccc;
+}
+
+.title {
+	padding: 15px 0;
+	color: #333;
+}
+
+.actions {
+	display: flex;
+	margin: 5px;
+}
+
+.actionBtn {
+	font-size: 2rem;
+	cursor: pointer;
+	transition: transform 0.3s;
+}
+
+.actionBtn:active {
+	transform: scale(0.95); /* Уменьшим размер при клике */
+}
+
+.done {
+	background-color: aquamarine;
+}
+
+.edit {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	height: 54px;
+}
+
+.etitfield {
+	width: 85%;
+}
+.etitBtn {
+	width: 15%;
+	border-left: none;
+	background-color: white;
+}
