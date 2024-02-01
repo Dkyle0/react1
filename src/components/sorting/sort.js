@@ -1,5 +1,6 @@
 import styles from './sort.module.css';
 import { debounce } from '../utils.js';
+import { useRef } from 'react';
 
 export function sort(todos, setfiltredTodos, isAlpha, setisAlpha) {
 	setisAlpha(!isAlpha);
@@ -30,9 +31,8 @@ export function filter(todos, setfiltredTodos, value) {
 	}
 }
 
-const debouncedFilter = debounce(filter, 300);
-
 export function Sorting({ todos, setfiltredTodos, isAlpha, setisAlpha }) {
+	const debouncedFilter = useRef(debounce(filter, 500)).current;
 	return (
 		<div className={styles.sort}>
 			<button

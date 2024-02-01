@@ -1,12 +1,14 @@
 import styles from './todo-field.module.css';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { doneToDo } from '../done-todo';
-import { delToDo } from '../del-todo';
+import { handleDelete } from '../del-todo';
 import { editoDo } from '../edit-todo';
 
-export function TodoField({ title, id, isDone, setRefreshProducts, refreshProducts }) {
+export function TodoFieldPage({ title, id, isDone, setRefreshProducts, refreshProducts }) {
 	const [isEdit, setIsEdit] = useState(false);
 	const [value, setNewWalue] = useState(title);
+	const navigate = useNavigate();
 
 	const mainField = (
 		<li className={isDone ? `${styles.field} ${styles.done}` : `${styles.field}`} key={id}>
@@ -21,7 +23,10 @@ export function TodoField({ title, id, isDone, setRefreshProducts, refreshProduc
 				>
 					&#9989;
 				</span>{' '}
-				<span className={styles.actionBtn} onClick={() => delToDo(id, setRefreshProducts, refreshProducts)}>
+				<span
+					className={styles.actionBtn}
+					onClick={() => handleDelete(id, setRefreshProducts, refreshProducts, navigate)}
+				>
 					&#10062;
 				</span>
 			</span>

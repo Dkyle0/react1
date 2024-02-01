@@ -1,24 +1,3 @@
 {
-  "todos": [
-    {
-      "title": "11d",
-      "isDone": false,
-      "id": "5bca"
-    },
-    {
-      "title": "sad",
-      "isDone": false,
-      "id": "8479"
-    },
-    {
-      "id": "0de5",
-      "title": "asd",
-      "isDone": false
-    },
-    {
-      "id": "5e10",
-      "title": "121",
-      "isDone": false
-    }
-  ]
+  "todos": []
 }

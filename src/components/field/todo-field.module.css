@@ -10,6 +10,12 @@
 .title {
 	padding: 15px 0;
 	color: #333;
+	overflow: auto;
+}
+
+.mainTitle {
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 .actions {
@@ -45,4 +51,8 @@
 	width: 15%;
 	border-left: none;
 	background-color: white;
+}
+
+.link {
+	text-decoration: none;
 }
