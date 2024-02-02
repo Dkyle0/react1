@@ -1,16 +1,18 @@
-export function doneToDo(title, id, isDone, userData, setUserData) {
+export function editoDo(title, id, isDone, userData, setUserData, setIsEdit, event) {
+	event.preventDefault();
 	const { refreshProducts } = userData;
 	fetch(`http://localhost:3003/todos/${id}`, {
 		method: 'PUT',
 		headers: { 'Content-Type': 'application/json;charset=utf-8' },
 		body: JSON.stringify({
 			title: title,
-			isDone: !isDone,
+			isDone: isDone,
 		}),
 	})
 		.then((rawResponse) => rawResponse.json())
 		.then((response) => {
-			console.log('Дело сделано, ответ сервера:', response);
+			console.log('Дело измнено, ответ сервера:', response);
 			setUserData({ ...userData, refreshProducts: !refreshProducts });
-		});
+		})
+		.finally(() => setIsEdit(false));
 }

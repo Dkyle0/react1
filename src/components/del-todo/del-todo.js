@@ -1,13 +1,11 @@
-import { ref, remove } from 'firebase/database';
-import { db } from '../firebase';
-
-export function delToDo(id, setRefreshProducts, refreshProducts) {
-	const todoDbRef = ref(db, `todos/${id}`);
-
-	remove(todoDbRef)
+export function delToDo(id, userData, setUserData) {
+	const { refreshProducts } = userData;
+	fetch(`http://localhost:3003/todos/${id}`, {
+		method: 'DELETE',
+	})
+		.then((rawResponse) => rawResponse.json())
 		.then((response) => {
 			console.log('Дело удалено из списка, ответ сервера:', response);
-			setRefreshProducts(!refreshProducts);
-		})
-		.catch((error) => console.error(error));
+			setUserData({ ...userData, refreshProducts: !refreshProducts });
+		});
 }

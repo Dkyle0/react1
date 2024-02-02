@@ -1,34 +1,40 @@
 import styles from './add-todo.module.css';
-import { ref, push } from 'firebase/database';
-import { db } from '../firebase';
+import { useState } from 'react';
+import { useContext } from 'react';
+import { AppContext } from '../context';
 
-export function requestAddTodo(value, setRefreshProducts, refreshProducts) {
+export function requestAddTodo(event, value, userData, setUserData) {
+	event.preventDefault();
+	const { refreshProducts } = userData;
 	if (value) {
-		const productsDbRef = ref(db, 'todos');
-
-		push(productsDbRef, {
-			title: value,
-			isDone: false,
+		fetch('http://localhost:3003/todos', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json;charset=utf-8' },
+			body: JSON.stringify({
+				title: value,
+				isDone: false,
+			}),
 		})
+			.then((rawResponse) => rawResponse.json())
 			.then((response) => {
 				console.log('Дело добавлено, ответ сервера:', response);
-				setRefreshProducts(!refreshProducts);
-			})
-			.catch((error) => {
-				console.error(error);
+				setUserData({ ...userData, refreshProducts: !refreshProducts });
 			});
 	}
 }
 
-export function Addtodo({ setRefreshProducts, refreshProducts }) {
+export function Addtodo() {
+	const [value, setValue] = useState('');
+	const { userData, setUserData } = useContext(AppContext);
+
 	return (
-		<form
-			onSubmit={(event) => {
-				event.preventDefault();
-				requestAddTodo(event.target[0].value, setRefreshProducts, refreshProducts);
-			}}
-		>
-			<input className={styles.new} placeholder="Введите новое дело"></input>
+		<form onSubmit={(event) => requestAddTodo(event, value, userData, setUserData)}>
+			<input
+				className={styles.new}
+				placeholder="Введите новое дело"
+				value={value}
+				onChange={(event) => setValue(event.target.value)}
+			/>
 			<button className={styles.addTodoBottom} type="submit">
 				Добавить
 			</button>
