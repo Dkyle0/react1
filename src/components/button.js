@@ -1,34 +1,14 @@
 import styles from './button.module.css';
-import PropTypes from 'prop-types';
+import { store } from './store';
 
-function ngClick(setField, setIsDraw, setIsGameEnded, setCurrentPlayer) {
-	setField(['', '', '', '', '', '', '', '', '']);
-	setIsDraw(false);
-	setIsGameEnded(false);
-	setCurrentPlayer('X');
+function ngClick() {
+	store.dispatch({ type: 'resetState' });
 }
 
-ngClick.propTypes = {
-	setField: PropTypes.func.isRequired,
-	setIsDraw: PropTypes.func.isRequired,
-	setIsGameEnded: PropTypes.func.isRequired,
-	setCurrentPlayer: PropTypes.func.isRequired,
-};
-
-export function NewGameBtn({ setField, setIsDraw, setIsGameEnded, setCurrentPlayer }) {
+export function NewGameBtn() {
 	return (
-		<button
-			className={styles.button}
-			onClick={() => ngClick(setField, setIsDraw, setIsGameEnded, setCurrentPlayer)}
-		>
+		<button className={styles.button} onClick={() => ngClick()}>
 			Новая игра
 		</button>
 	);
 }
-
-ngClick.NewGameBtn = {
-	setField: PropTypes.func.isRequired,
-	setIsDraw: PropTypes.func.isRequired,
-	setIsGameEnded: PropTypes.func.isRequired,
-	setCurrentPlayer: PropTypes.func.isRequired,
-};
