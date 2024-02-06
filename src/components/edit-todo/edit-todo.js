@@ -1,6 +1,7 @@
-export function editoDo(title, id, isDone, userData, setUserData, setIsEdit, event) {
+import { ACTIONS } from '../constants/actions';
+
+export function editoDo(title, id, isDone, refreshProducts, dispatch, setIsEdit, event) {
 	event.preventDefault();
-	const { refreshProducts } = userData;
 	fetch(`http://localhost:3003/todos/${id}`, {
 		method: 'PUT',
 		headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -12,7 +13,7 @@ export function editoDo(title, id, isDone, userData, setUserData, setIsEdit, eve
 		.then((rawResponse) => rawResponse.json())
 		.then((response) => {
 			console.log('Дело измнено, ответ сервера:', response);
-			setUserData({ ...userData, refreshProducts: !refreshProducts });
+			dispatch({ type: ACTIONS.upRefreshProduct, payload: !refreshProducts });
 		})
 		.finally(() => setIsEdit(false));
 }

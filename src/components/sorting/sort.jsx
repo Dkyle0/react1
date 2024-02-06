@@ -1,12 +1,10 @@
 import styles from './sort.module.css';
 import { debounce } from '../utils.js/index.js';
-import { useContext } from 'react';
-import { AppContext } from '../context';
+import { ACTIONS } from '../constants/actions';
+import { useSelector, useDispatch } from 'react-redux';
 
-export function sort(userData, setUserData) {
-	const { todos, isAlpha } = userData;
-
-	setUserData({ ...userData, isAlpha: !isAlpha });
+export function sort(isAlpha, todos, dispatch) {
+	dispatch({ type: ACTIONS.upIsAlpha, payload: !isAlpha });
 	if (!isAlpha) {
 		const sortedTodos = [...todos].sort((a, b) => {
 			const titleA = a.title.toLowerCase();
@@ -20,31 +18,33 @@ export function sort(userData, setUserData) {
 			}
 			return 0;
 		});
-		setUserData({ ...userData, filtredTodos: sortedTodos });
+		dispatch({ type: ACTIONS.upFiltredTodus, payload: [...sortedTodos] });
 	} else {
-		setUserData({ ...userData, filtredTodos: [...todos] });
+		dispatch({ type: ACTIONS.upFiltredTodus, payload: [...todos] });
 	}
 }
 
-export function filter(userData, setUserData, value) {
-	const { todos } = userData;
+export function filter(todos, dispatch, value) {
 	if (value) {
 		const filtred = todos.filter((todo) => todo.title.includes(value));
-		setUserData({ ...userData, filtredTodos: filtred });
+		dispatch({ type: ACTIONS.upFiltredTodus, payload: [...filtred] });
 	} else {
-		setUserData({ ...userData, filtredTodos: [...todos] });
+		dispatch({ type: ACTIONS.upFiltredTodus, payload: [...todos] });
 	}
 }
 
 const debouncedFilter = debounce(filter, 300);
 
 export function Sorting() {
-	const { userData, setUserData } = useContext(AppContext);
+	const dispatch = useDispatch();
+	const isAlpha = useSelector((state) => state.param.isAlpha);
+	const todos = useSelector((state) => state.todos.todos);
+
 	return (
 		<div className={styles.sort}>
 			<button
 				onClick={() => {
-					sort(userData, setUserData);
+					sort(isAlpha, todos, dispatch);
 				}}
 			>
 				Сортировать по алфавиту
@@ -53,7 +53,7 @@ export function Sorting() {
 				className={styles.search}
 				type="text"
 				placeholder="Поиск"
-				onChange={(event) => debouncedFilter(userData, setUserData, event.target.value)}
+				onChange={(event) => debouncedFilter(todos, dispatch, event.target.value)}
 			/>
 		</div>
 	);

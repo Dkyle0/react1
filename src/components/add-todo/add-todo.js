@@ -1,11 +1,11 @@
 import styles from './add-todo.module.css';
 import { useState } from 'react';
-import { useContext } from 'react';
-import { AppContext } from '../context';
+import { ACTIONS } from '../constants/actions';
+import { useSelector, useDispatch } from 'react-redux';
 
-export function requestAddTodo(event, value, userData, setUserData) {
+export function requestAddTodo(event, value, refreshProducts, dispatch) {
 	event.preventDefault();
-	const { refreshProducts } = userData;
+
 	if (value) {
 		fetch('http://localhost:3003/todos', {
 			method: 'POST',
@@ -18,17 +18,18 @@ export function requestAddTodo(event, value, userData, setUserData) {
 			.then((rawResponse) => rawResponse.json())
 			.then((response) => {
 				console.log('Дело добавлено, ответ сервера:', response);
-				setUserData({ ...userData, refreshProducts: !refreshProducts });
+				dispatch({ type: ACTIONS.upRefreshProduct, payload: !refreshProducts });
 			});
 	}
 }
 
 export function Addtodo() {
 	const [value, setValue] = useState('');
-	const { userData, setUserData } = useContext(AppContext);
+	const dispatch = useDispatch();
+	const refreshProducts = useSelector((state) => state.param.refreshProducts);
 
 	return (
-		<form onSubmit={(event) => requestAddTodo(event, value, userData, setUserData)}>
+		<form onSubmit={(event) => requestAddTodo(event, value, refreshProducts, dispatch)}>
 			<input
 				className={styles.new}
 				placeholder="Введите новое дело"

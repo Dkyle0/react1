@@ -1,5 +1,6 @@
-export function doneToDo(title, id, isDone, userData, setUserData) {
-	const { refreshProducts } = userData;
+import { ACTIONS } from '../constants/actions';
+
+export function doneToDo(title, id, isDone, refreshProducts, dispatch) {
 	fetch(`http://localhost:3003/todos/${id}`, {
 		method: 'PUT',
 		headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -11,6 +12,6 @@ export function doneToDo(title, id, isDone, userData, setUserData) {
 		.then((rawResponse) => rawResponse.json())
 		.then((response) => {
 			console.log('Дело сделано, ответ сервера:', response);
-			setUserData({ ...userData, refreshProducts: !refreshProducts });
+			dispatch({ type: ACTIONS.upRefreshProduct, payload: !refreshProducts });
 		});
 }
