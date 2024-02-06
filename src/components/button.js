@@ -1,13 +1,15 @@
 import styles from './button.module.css';
-import { store } from './store';
-
-function ngClick() {
-	store.dispatch({ type: 'resetState' });
-}
+import { useDispatch } from 'react-redux';
 
 export function NewGameBtn() {
+	const dispatch = useDispatch();
+
+	function newGameButton() {
+		dispatch({ type: 'resetState' });
+	}
+
 	return (
-		<button className={styles.button} onClick={() => ngClick()}>
+		<button className={styles.button} onClick={() => newGameButton()}>
 			Новая игра
 		</button>
 	);

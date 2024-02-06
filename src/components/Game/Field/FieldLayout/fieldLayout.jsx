@@ -1,8 +1,8 @@
-import { store } from '../../../store';
+import { useSelector } from 'react-redux';
 import styles from './fieldLayout.module.css';
 
 export function FieldLayout({ stepClick }) {
-	const { fields } = store.getState();
+	const fields = useSelector((state) => state.fields);
 	return (
 		<div className={styles.board}>
 			{fields.map((value, index) => (

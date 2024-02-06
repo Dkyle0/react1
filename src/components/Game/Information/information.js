@@ -1,14 +1,10 @@
 import { InformationLayout } from './InformationLayout/InformationLayout';
-import { store } from '../../store/store';
-import { useState } from 'react';
-import { updater } from '../../store/store';
+import { useSelector } from 'react-redux';
 
 export function Information() {
-	const [update, setUpdate] = useState(0);
-
-	updater(update, setUpdate);
-
-	const { currentPlayer, isDraw, isGameEnded } = store.getState();
+	const currentPlayer = useSelector((state) => state.currentPlayer);
+	const isDraw = useSelector((state) => state.isDraw);
+	const isGameEnded = useSelector((state) => state.isGameEnded);
 
 	let text = `Сейчас ходит: ${currentPlayer}`;
 	if (isDraw) {

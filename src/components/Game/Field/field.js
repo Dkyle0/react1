@@ -1,12 +1,11 @@
 import { FieldLayout } from './FieldLayout/fieldLayout';
-import { store } from '../../store';
-import { useState } from 'react';
-import { updater } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
 
 export function Field() {
-	const [update, setUpdate] = useState(0);
-
-	updater(update, setUpdate); // не зенаю, на сколько корректно так обновлять(скорее всего, так не нужно делать), но я по другому не придумал, как обновить
+	const dispatch = useDispatch(); //теперь нет проблем с обновлением вручную :)
+	const fields = useSelector((state) => state.fields);
+	const currentPlayer = useSelector((state) => state.currentPlayer);
+	const isGameEnded = useSelector((state) => state.isGameEnded);
 
 	function checkWin(fields, symbol) {
 		const WIN_PATTERNS = [
@@ -30,20 +29,19 @@ export function Field() {
 	}
 
 	function stepClick(index) {
-		const { fields, currentPlayer, isGameEnded } = store.getState();
 		if (!isGameEnded) {
 			const updatedFields = [...fields];
 			if (fields[index] === '') {
 				updatedFields[index] = currentPlayer;
-				store.dispatch({ type: 'changeField', payload: updatedFields });
+				dispatch({ type: 'changeField', payload: updatedFields });
 				if (currentPlayer === 'X') {
-					store.dispatch({ type: 'changePlayer', payload: '0' });
-				} else store.dispatch({ type: 'changePlayer', payload: 'X' });
+					dispatch({ type: 'changePlayer', payload: '0' });
+				} else dispatch({ type: 'changePlayer', payload: 'X' });
 			}
 			if (checkWin(updatedFields, 'X') || checkWin(updatedFields, '0')) {
-				store.dispatch({ type: 'endGame', payload: true });
+				dispatch({ type: 'endGame', payload: true });
 			} else if (updatedFields.every((a) => a !== '')) {
-				store.dispatch({ type: 'draw', payload: true });
+				dispatch({ type: 'draw', payload: true });
 			}
 		}
 	}
