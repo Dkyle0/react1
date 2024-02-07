@@ -1,8 +1,8 @@
 import { ACTIONS } from '../constants/actions';
 
-export function editoDo(title, id, isDone, refreshProducts, dispatch, setIsEdit, event) {
+export const editoDo = (title, id, isDone, refreshProducts, setIsEdit, event) => (dispatch) => {
 	event.preventDefault();
-	fetch(`http://localhost:3003/todos/${id}`, {
+	return fetch(`http://localhost:3003/todos/${id}`, {
 		method: 'PUT',
 		headers: { 'Content-Type': 'application/json;charset=utf-8' },
 		body: JSON.stringify({
@@ -16,4 +16,4 @@ export function editoDo(title, id, isDone, refreshProducts, dispatch, setIsEdit,
 			dispatch({ type: ACTIONS.upRefreshProduct, payload: !refreshProducts });
 		})
 		.finally(() => setIsEdit(false));
-}
+};

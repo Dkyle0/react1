@@ -1,7 +1,7 @@
 import { ACTIONS } from '../constants/actions';
 
-export function doneToDo(title, id, isDone, refreshProducts, dispatch) {
-	fetch(`http://localhost:3003/todos/${id}`, {
+export const doneToDo = (title, id, isDone, refreshProducts) => (dispatch) => {
+	return fetch(`http://localhost:3003/todos/${id}`, {
 		method: 'PUT',
 		headers: { 'Content-Type': 'application/json;charset=utf-8' },
 		body: JSON.stringify({
@@ -14,4 +14,4 @@ export function doneToDo(title, id, isDone, refreshProducts, dispatch) {
 			console.log('Дело сделано, ответ сервера:', response);
 			dispatch({ type: ACTIONS.upRefreshProduct, payload: !refreshProducts });
 		});
-}
+};

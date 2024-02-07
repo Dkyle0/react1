@@ -2,6 +2,7 @@ import styles from './sort.module.css';
 import { debounce } from '../utils.js/index.js';
 import { ACTIONS } from '../constants/actions';
 import { useSelector, useDispatch } from 'react-redux';
+import { selectAlpha, selectTodos } from '../selectors/selectors.js';
 
 export function sort(isAlpha, todos, dispatch) {
 	dispatch({ type: ACTIONS.upIsAlpha, payload: !isAlpha });
@@ -37,8 +38,8 @@ const debouncedFilter = debounce(filter, 300);
 
 export function Sorting() {
 	const dispatch = useDispatch();
-	const isAlpha = useSelector((state) => state.param.isAlpha);
-	const todos = useSelector((state) => state.todos.todos);
+	const isAlpha = useSelector(selectAlpha);
+	const todos = useSelector(selectTodos);
 
 	return (
 		<div className={styles.sort}>

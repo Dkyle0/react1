@@ -4,26 +4,17 @@ import { TodoField } from './field';
 import { Sorting } from './sorting';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { ACTIONS } from './constants/actions';
+import { selectFiltred, selectLoading, selectRefresh } from './selectors/selectors';
+import { readTodosAsync } from './actions/read-todos-async';
 
 export function TodoBlock() {
 	const dispatch = useDispatch();
-	const filtredTodos = useSelector((state) => state.todos.filtredTodos);
-	const isLoading = useSelector((state) => state.param.isLoading);
-	const refreshProducts = useSelector((state) => state.param.refreshProducts);
+	const filtredTodos = useSelector(selectFiltred);
+	const isLoading = useSelector(selectLoading);
+	const refreshProducts = useSelector(selectRefresh);
 
 	useEffect(() => {
-		fetch('http://localhost:3003/todos')
-			.then((loadedData) => loadedData.json())
-			.then((list) => {
-				dispatch({ type: ACTIONS.initTodos, payload: [...list] });
-			})
-			.catch((error) => {
-				console.error('Error fetching data:', error);
-			})
-			.finally(() => {
-				dispatch({ type: ACTIONS.upIsLoading, payload: false });
-			});
+		dispatch(readTodosAsync());
 	}, [dispatch, refreshProducts]);
 
 	return (

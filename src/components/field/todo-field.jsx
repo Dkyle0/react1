@@ -4,12 +4,13 @@ import { doneToDo } from '../done-todo';
 import { delToDo } from '../del-todo';
 import { editoDo } from '../edit-todo';
 import { useSelector, useDispatch } from 'react-redux';
+import { selectRefresh } from '../selectors/selectors';
 
 export function TodoField({ title, id, isDone }) {
-	const [isEdit, setIsEdit] = useState(false);
+	const [isEdit, setIsEdit] = useState(false); // нормально, что часть состояний, которые используются локально находятся не в store?
 	const [value, setNewValue] = useState(title);
 	const dispatch = useDispatch();
-	const refreshProducts = useSelector((state) => state.param.refreshProducts);
+	const refreshProducts = useSelector(selectRefresh);
 
 	const mainField = (
 		<li className={isDone ? `${styles.field} ${styles.done}` : `${styles.field}`} key={id}>
@@ -20,11 +21,11 @@ export function TodoField({ title, id, isDone }) {
 				</span>{' '}
 				<span
 					className={styles.actionBtn}
-					onClick={() => doneToDo(title, id, isDone, refreshProducts, dispatch)}
+					onClick={() => dispatch(doneToDo(title, id, isDone, refreshProducts))}
 				>
 					&#9989;
 				</span>{' '}
-				<span className={styles.actionBtn} onClick={() => delToDo(id, refreshProducts, dispatch)}>
+				<span className={styles.actionBtn} onClick={() => dispatch(delToDo(id, refreshProducts))}>
 					&#10062;
 				</span>
 			</span>
@@ -34,7 +35,7 @@ export function TodoField({ title, id, isDone }) {
 	const editField = (
 		<form
 			className={styles.edit}
-			onSubmit={(event) => editoDo(value, id, isDone, refreshProducts, dispatch, setIsEdit, event)}
+			onSubmit={(event) => dispatch(editoDo(value, id, isDone, refreshProducts, setIsEdit, event))}
 		>
 			<input className={styles.etitfield} value={value} onChange={(event) => setNewValue(event.target.value)} />
 			<button className={styles.etitBtn} type="submit">

@@ -2,12 +2,13 @@ import styles from './add-todo.module.css';
 import { useState } from 'react';
 import { ACTIONS } from '../constants/actions';
 import { useSelector, useDispatch } from 'react-redux';
+import { selectRefresh } from '../selectors/selectors';
 
-export function requestAddTodo(event, value, refreshProducts, dispatch) {
+export const requestAddTodo = (event, value, refreshProducts) => (dispatch) => {
 	event.preventDefault();
 
 	if (value) {
-		fetch('http://localhost:3003/todos', {
+		return fetch('http://localhost:3003/todos', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json;charset=utf-8' },
 			body: JSON.stringify({
@@ -21,15 +22,15 @@ export function requestAddTodo(event, value, refreshProducts, dispatch) {
 				dispatch({ type: ACTIONS.upRefreshProduct, payload: !refreshProducts });
 			});
 	}
-}
+};
 
 export function Addtodo() {
 	const [value, setValue] = useState('');
 	const dispatch = useDispatch();
-	const refreshProducts = useSelector((state) => state.param.refreshProducts);
+	const refreshProducts = useSelector(selectRefresh);
 
 	return (
-		<form onSubmit={(event) => requestAddTodo(event, value, refreshProducts, dispatch)}>
+		<form onSubmit={(event) => dispatch(requestAddTodo(event, value, refreshProducts))}>
 			<input
 				className={styles.new}
 				placeholder="Введите новое дело"
