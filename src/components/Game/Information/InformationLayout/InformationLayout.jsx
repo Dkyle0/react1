@@ -1,5 +1,7 @@
-import styles from './InformationLayout.module.css'
-
-export function InformationLayout ({text}) {
-	return <div className={styles.info}>{text}</div>
+export function InformationLayout({ text }) {
+	return (
+		<div className="bg-gray-600  text-white text-center w-auto p-5 text-lg">
+			{text}
+		</div>
+	);
 }

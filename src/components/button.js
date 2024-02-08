@@ -1,16 +1,23 @@
-import styles from './button.module.css';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
+import { Component } from 'react';
 
-export function NewGameBtn() {
-	const dispatch = useDispatch();
-
-	function newGameButton() {
-		dispatch({ type: 'resetState' });
+export class NewGameBtnContainer extends Component {
+	constructor({ newGameButton }) {
+		super();
+		this.newGameButton = newGameButton;
 	}
 
-	return (
-		<button className={styles.button} onClick={() => newGameButton()}>
-			Новая игра
-		</button>
-	);
+	render() {
+		return (
+			<button className="button" onClick={this.newGameButton}>
+				Новая игра
+			</button>
+		);
+	}
 }
+
+const MapDispatchToProps = (dispatch) => ({
+	newGameButton: () => dispatch({ type: 'resetState' }),
+});
+
+export const NewGameBtn = connect(null, MapDispatchToProps)(NewGameBtnContainer);

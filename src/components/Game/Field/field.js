@@ -1,13 +1,13 @@
 import { FieldLayout } from './FieldLayout/fieldLayout';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
+import { Component } from 'react';
 
-export function Field() {
-	const dispatch = useDispatch(); //теперь нет проблем с обновлением вручную :)
-	const fields = useSelector((state) => state.fields);
-	const currentPlayer = useSelector((state) => state.currentPlayer);
-	const isGameEnded = useSelector((state) => state.isGameEnded);
-
-	function checkWin(fields, symbol) {
+export class FieldContainer extends Component {
+	constructor(props) {
+		super(props);
+		this.stepClick = this.stepClick.bind(this); // Привязка к текущему контексту
+	}
+	checkWin(fields, symbol) {
 		const WIN_PATTERNS = [
 			[0, 1, 2],
 			[3, 4, 5],
@@ -28,22 +28,56 @@ export function Field() {
 		return false;
 	}
 
-	function stepClick(index) {
+	stepClick(index) {
+		const {
+			currentPlayer,
+			fields,
+			isGameEnded,
+			changeField,
+			changePlayerO,
+			changePlayerX,
+			endGame,
+			draw,
+		} = this.props;
 		if (!isGameEnded) {
 			const updatedFields = [...fields];
 			if (fields[index] === '') {
 				updatedFields[index] = currentPlayer;
-				dispatch({ type: 'changeField', payload: updatedFields });
+				changeField(updatedFields);
 				if (currentPlayer === 'X') {
-					dispatch({ type: 'changePlayer', payload: '0' });
-				} else dispatch({ type: 'changePlayer', payload: 'X' });
+					changePlayerO();
+				} else changePlayerX();
 			}
-			if (checkWin(updatedFields, 'X') || checkWin(updatedFields, '0')) {
-				dispatch({ type: 'endGame', payload: true });
+			if (this.checkWin(updatedFields, 'X') || this.checkWin(updatedFields, '0')) {
+				endGame();
 			} else if (updatedFields.every((a) => a !== '')) {
-				dispatch({ type: 'draw', payload: true });
+				draw();
 			}
 		}
 	}
-	return <FieldLayout stepClick={stepClick} />;
+
+	render() {
+		return <FieldLayout stepClick={this.stepClick} />;
+	}
 }
+
+const mapStateToProps = (state) => {
+	return {
+		currentPlayer: state.currentPlayer,
+		isGameEnded: state.isGameEnded,
+		fields: state.fields,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		changeField: (updatedFields) =>
+			dispatch({ type: 'changeField', payload: updatedFields }),
+		changePlayerO: () => dispatch({ type: 'changePlayer', payload: '0' }),
+		changePlayerX: () => dispatch({ type: 'changePlayer', payload: 'X' }),
+		endGame: () => dispatch({ type: 'endGame', payload: true }),
+		draw: () => dispatch({ type: 'draw', payload: true }),
+	};
+};
+
+export const Field = connect(mapStateToProps, mapDispatchToProps)(FieldContainer);

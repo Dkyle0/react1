@@ -1,13 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.main {
+		border-radius: 10px;
+		box-shadow:
+			0px 3px 6px 0px rgba(0, 0, 0, 0.15),
+			0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+		margin-inline-start: auto;
+		margin-inline-end: auto;
+		margin-block-start: 2%;
+		max-inline-size: 25rem;
+		overflow: hidden;
+	}
+
+	.button {
+		display: inline-block;
+		/* position: relative; */
+		margin: 2% 33%;
+		padding: 10px 20px;
+		font-size: 16px;
+		font-weight: bold;
+		text-align: center;
+		text-decoration: none;
+		cursor: pointer;
+		border: 2px solid #3498db;
+		border-radius: 5px;
+		color: #ffffff;
+		background-color: #3498db;
+		transition: background-color 0.2s;
+	}
+
+	.button:hover {
+		background-color: #2980b9;
+	}
+
+	.button:active {
+		border-radius: 5px;
+		background-color: rgba(6, 114, 255, 0.3);
+	}
+
+	.board {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-gap: 1px;
+		background: hsl(207, 19%, 61%);
+	}
+
+	.field {
+		background: hsl(210, 25%, 95%);
+		border: none;
+		padding-block-start: 2.5rem;
+		padding-block-end: 2.5rem;
+		padding-inline-end: 1.25rem;
+		padding-inline-start: 1.25rem;
+		font-size: 2.5rem;
+		text-align: center;
+	}
+	.field:active,
+	.field:focus {
+		box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3) inset;
+		outline: none;
+	}
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
